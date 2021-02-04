@@ -1,0 +1,14 @@
+- name: Install and configure Azure pipeline agent software
+  hosts: all
+  become: yes
+  vars_files:
+    - "./vars/secrets.yaml"
+  roles:
+    - role: custom_sudo_user
+      vars:
+        user: azure
+    - docker      
+    - role: azure_pipeline_agent
+      vars:
+        agent_version: 2.175.0
+        user: azure  
