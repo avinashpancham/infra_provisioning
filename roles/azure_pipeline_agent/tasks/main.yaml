@@ -1,3 +1,6 @@
+- name: Install dependencies
+  package: name={{ item }} state=present
+  loop: [ 'apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common', 'python3-pip', 'virtualenv', 'python3-setuptools']
 - name: Install Azure CLI
   pip:
     name: azure-cli  
@@ -36,5 +39,5 @@
   register: azure_devops_systemd
 - name: Run Azure DevOps agent
   ansible.builtin.systemd:
-    state: started
     name: '{{ azure_devops_systemd.stdout }}'
+    state: started

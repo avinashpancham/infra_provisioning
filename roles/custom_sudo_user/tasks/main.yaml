@@ -1,8 +1,10 @@
 - name: Add user
   user:
     name: '{{ user }}'
-    group: admin    
+    group: admin   
+    state: present 
 - name: Allow paswordless sudo with user
   ansible.builtin.lineinfile:
     path: /etc/sudoers
     line: '{{ user }} ALL=(ALL) NOPASSWD: ALL'
+    state: present
