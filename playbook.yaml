@@ -11,4 +11,5 @@
     - role: azure_pipeline_agent
       vars:
         agent_version: 2.175.0
+        pool: Default
         user: azure  
