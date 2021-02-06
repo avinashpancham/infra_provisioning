@@ -1,3 +1,4 @@
+---
 - name: Check required variables
   fail:
     msg: 'Variable {{ item }} is not defined'
@@ -6,10 +7,12 @@
 - name: Add user
   user:
     name: '{{ user }}'
-    group: admin   
-    state: present 
+    group: admin
+    state: present
 - name: Allow paswordless sudo with user
   ansible.builtin.copy:
     content: '{{ user }} ALL=(ALL) NOPASSWD: ALL'
-    dest: /etc/sudoers.d/{{ user }} # sudoers.d/username file is preferred over sudoers, since the latter is changed by system updates
+    dest: /etc/sudoers.d/{{ user }}
+    # sudoers.d/username file is preferred over sudoers,
+    # since the latter is changed by system updates
     validate: 'visudo -cf %s'

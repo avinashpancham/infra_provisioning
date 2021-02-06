@@ -1,8 +1,16 @@
+---
 - name: Install aptitude
   package: name=aptitude state=latest update_cache=yes force_apt_get=yes
 - name: Install dependencies
   package: name={{ item }} state=present
-  loop: [ 'apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common', 'python3-pip', 'virtualenv', 'python3-setuptools']
+  loop:
+    - apt-transport-https
+    - ca-certificates
+    - curl
+    - software-properties-common
+    - python3-pip
+    - virtualenv
+    - python3-setuptools
 - name: Add Docker GPG apt Key
   apt_key:
     url: https://download.docker.com/linux/ubuntu/gpg

@@ -1,3 +1,4 @@
+---
 - name: Check required variables
   fail:
     msg: 'Variable {{ item }} is not defined'
@@ -5,23 +6,32 @@
   with_items: '{{ required_vars }}'
 - name: Install dependencies
   package: name={{ item }} state=present
-  loop: [ 'apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common', 'python3-pip', 'virtualenv', 'python3-setuptools']
+  loop:
+    - apt-transport-https
+    - ca-certificates
+    - curl
+    - software-properties-common
+    - python3-pip
+    - virtualenv
+    - python3-setuptools
 - name: Install Azure CLI
   pip:
-    name: azure-cli  
+    name: azure-cli
     executable: pip3
     state: present
-- name: Download and extract Azure DevOps agent software 
+- name: Download and extract Azure DevOps agent software
   become_user: '{{ user }}'
   ansible.builtin.unarchive:
-    remote_src: yes        
-    src: https://vstsagentpackage.azureedge.net/agent/{{ agent_version }}/vsts-agent-linux-x64-{{ agent_version }}.tar.gz
+    remote_src: yes
+    src: "https://vstsagentpackage.azureedge.net/\
+      agent/{{ agent_version }}/\
+      vsts-agent-linux-x64-{{ agent_version }}.tar.gz"
     dest: /home/{{ user }}
     creates: /home/{{ user }}/config.sh
 - name: Configure Azure DevOps agent
   become_user: '{{ user }}'
   command: >
-    ./config.sh 
+    ./config.sh
     --unattended
     --acceptTeeEula
     --url={{ url }}
@@ -35,7 +45,7 @@
   become_user: '{{ user }}'
   command: >
     sudo
-    ./svc.sh 
+    ./svc.sh
     install
   args:
     chdir: /home/{{ user }}
@@ -43,7 +53,7 @@
 - name: Get Azure DevOps agent systemd name
   shell: cat /home/{{ user }}/.service
   register: azure_devops_systemd
-  changed_when: False
+  changed_when: false
 - name: Run Azure DevOps agent
   ansible.builtin.systemd:
     name: '{{ azure_devops_systemd.stdout }}'

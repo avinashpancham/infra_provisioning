@@ -1,3 +1,4 @@
+---
 - name: Install and configure Azure pipeline agent software
   hosts: all
   become: yes
@@ -9,5 +10,5 @@
     user: azure
   roles:
     - custom_sudo_user
-    - docker      
+    - docker
     - azure_pipeline_agent
