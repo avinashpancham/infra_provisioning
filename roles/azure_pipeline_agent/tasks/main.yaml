@@ -1,3 +1,8 @@
+- name: Check required variables
+  fail:
+    msg: 'Variable {{ item }} is not defined'
+  when: item not in vars
+  with_items: '{{ required_vars }}'
 - name: Install dependencies
   package: name={{ item }} state=present
   loop: [ 'apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common', 'python3-pip', 'virtualenv', 'python3-setuptools']

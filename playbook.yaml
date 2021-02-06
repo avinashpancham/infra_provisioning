@@ -3,13 +3,11 @@
   become: yes
   vars_files:
     - "./vars/secrets.yaml"
+  vars:
+    agent_version: 2.175.0
+    pool: Default
+    user: azure
   roles:
-    - role: custom_sudo_user
-      vars:
-        user: azure
+    - custom_sudo_user
     - docker      
-    - role: azure_pipeline_agent
-      vars:
-        agent_version: 2.175.0
-        pool: Default
-        user: azure  
+    - azure_pipeline_agent
