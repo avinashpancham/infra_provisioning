@@ -9,7 +9,7 @@
     group: admin   
     state: present 
 - name: Allow paswordless sudo with user
-  ansible.builtin.lineinfile:
-    path: /etc/sudoers
-    line: '{{ user }} ALL=(ALL) NOPASSWD: ALL'
-    state: present
+  ansible.builtin.copy:
+    content: '{{ user }} ALL=(ALL) NOPASSWD: ALL'
+    dest: /etc/sudoers.d/{{ user }} # sudoers.d/username file is preferred over sudoers, since the latter is changed by system updates
+    validate: 'visudo -cf %s'

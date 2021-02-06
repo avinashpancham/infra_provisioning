@@ -43,6 +43,7 @@
 - name: Get Azure DevOps agent systemd name
   shell: cat /home/{{ user }}/.service
   register: azure_devops_systemd
+  changed_when: False
 - name: Run Azure DevOps agent
   ansible.builtin.systemd:
     name: '{{ azure_devops_systemd.stdout }}'
