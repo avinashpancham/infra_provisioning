@@ -3,11 +3,10 @@
   fail:
     msg: 'Variable {{ item }} is not defined'
   when: item not in vars
-  with_items: '{{ required_vars }}'
+  loop: '{{ required_vars }}'
 - name: Add user
   user:
     name: '{{ user }}'
-    group: admin
     state: present
 - name: Allow paswordless sudo with user
   ansible.builtin.copy:

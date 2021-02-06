@@ -3,7 +3,7 @@
   fail:
     msg: 'Variable {{ item }} is not defined'
   when: item not in vars
-  with_items: '{{ required_vars }}'
+  loop: '{{ required_vars }}'
 - name: Install dependencies
   package: name={{ item }} state=present
   loop:
@@ -36,7 +36,7 @@
     --acceptTeeEula
     --url={{ url }}
     --auth pat
-    --token={{ token}}
+    --token={{ token }}
     --pool={{ pool | default('Default') }}
   args:
     chdir: /home/{{ user }}
@@ -51,7 +51,7 @@
     chdir: /home/{{ user }}
     creates: .service
 - name: Get Azure DevOps agent systemd name
-  shell: cat /home/{{ user }}/.service
+  command: cat /home/{{ user }}/.service
   register: azure_devops_systemd
   changed_when: false
 - name: Run Azure DevOps agent
