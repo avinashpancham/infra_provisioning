@@ -1,0 +1,31 @@
+{
+	"name": "Python 3",
+	"build": {
+		"dockerfile": "Dockerfile",
+		"context": ".."
+	},
+
+	"settings": { 
+		"terminal.integrated.shell.linux": "/bin/bash",
+		"python.pythonPath": "/usr/local/bin/python",
+	},
+
+	"extensions": [
+		"ms-python.python",
+		"eamodio.gitlens",
+		"GitHub.vscode-pull-request-github",
+		"ms-azuretools.vscode-docker",
+		"VisualStudioExptTeam.vscodeintellicode",
+		"yzhang.markdown-all-in-one"
+
+	],
+	"mounts": [
+		"source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached"
+	],
+	"postCreateCommand": "pre-commit install && pre-commit install-hooks",
+	"remoteEnv": {
+		"VISUAL": "vim.tiny",
+		"EDITOR": "${remoteEnv:VISUAL}"
+	},
+	"remoteUser": "vscode"
+}
