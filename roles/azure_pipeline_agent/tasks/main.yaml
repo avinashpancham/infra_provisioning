@@ -4,6 +4,15 @@
     msg: 'Variable {{ item }} is not defined'
   when: item not in vars
   loop: '{{ required_vars }}'
+- name: Retrieve user information from database
+  getent:
+    database: passwd
+    key: '{{ user }}'
+    fail_key: false
+- name: Check if required user is present
+  fail:
+    msg: 'User {{ user }} is not defined'
+  when: not getent_passwd[user]
 - name: Install dependencies
   package: name={{ item }} state=present
   loop:
