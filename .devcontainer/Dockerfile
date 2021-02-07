@@ -5,4 +5,5 @@ FROM mcr.microsoft.com/vscode/devcontainers/python:3.9
 # Install dependencies
 COPY requirements.txt requirements-dev.txt /tmp/pip-tmp/
 RUN pip3 --disable-pip-version-check --no-cache-dir install -r /tmp/pip-tmp/requirements-dev.txt \
-    && rm -rf /tmp/pip-tmp
+    && rm -rf /tmp/pip-tmp \
+    && ansible-galaxy collection install azure.azcollection
