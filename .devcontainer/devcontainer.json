@@ -4,7 +4,6 @@
 		"dockerfile": "Dockerfile",
 		"context": ".."
 	},
-
 	"settings": { 
 		"terminal.integrated.shell.linux": "/bin/bash",
 		"python.pythonPath": "/usr/local/bin/python",
@@ -17,7 +16,6 @@
 		"ms-azuretools.vscode-docker",
 		"VisualStudioExptTeam.vscodeintellicode",
 		"yzhang.markdown-all-in-one"
-
 	],
 	"mounts": [
 		"source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached"
