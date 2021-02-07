@@ -18,12 +18,15 @@
 		"yzhang.markdown-all-in-one"
 	],
 	"mounts": [
-		"source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached"
+		"source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached",
+		"source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
 	],
+	"runArgs": ["--init"],
 	"postCreateCommand": "pre-commit install && pre-commit install-hooks",
 	"remoteEnv": {
 		"VISUAL": "vim.tiny",
 		"EDITOR": "${remoteEnv:VISUAL}"
 	},
-	"remoteUser": "vscode"
+	"remoteUser": "vscode",
+	"overrideCommand": false
 }
