@@ -5,7 +5,7 @@
   vars_files:
     - "./vars/secrets.yaml"
   vars:
-    agent_version: 2.175.0
+    agent_version: 2.181.1
     pool: Default
     user: azure
   roles:
