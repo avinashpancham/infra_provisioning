@@ -15,7 +15,8 @@
 		"GitHub.vscode-pull-request-github",
 		"ms-azuretools.vscode-docker",
 		"VisualStudioExptTeam.vscodeintellicode",
-		"yzhang.markdown-all-in-one"
+		"yzhang.markdown-all-in-one",
+		"4ops.terraform",
 	],
 	"mounts": [
 		"source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached",
