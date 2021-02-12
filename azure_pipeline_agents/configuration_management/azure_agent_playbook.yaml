@@ -3,7 +3,7 @@
   hosts: all
   become: yes
   vars_files:
-    - "./vars/secrets.yaml"
+    - "./secrets.yaml"
   vars:
     agent_version: 2.181.1
     pool: Default
