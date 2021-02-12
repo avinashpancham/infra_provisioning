@@ -7,6 +7,10 @@ terraform {
   }
 }
 
+resource "random_id" "suffix" {
+  byte_length = 4
+}
+
 provider "azurerm" {
   features {}
 }
@@ -79,7 +83,7 @@ resource "azurerm_network_interface_security_group_association" "agent_nsg_nic" 
 
 // Create VM
 resource "azurerm_linux_virtual_machine" "agent" {
-  name                  = var.prefix
+  name                  = "${var.prefix}-${random_id.suffix.hex}"
   location              = var.location
   resource_group_name   = azurerm_resource_group.agents.name
   network_interface_ids = [azurerm_network_interface.agent_nic.id]
@@ -106,7 +110,29 @@ resource "azurerm_linux_virtual_machine" "agent" {
   }
 
   tags = {
-    "${var.default_user}" = var.prefix 
+    "${var.default_user}" = var.prefix
+  }
+}
+
+data "azurerm_public_ip" "ip_ref" {
+  name                = "${var.prefix}_public_ip"
+  resource_group_name = var.prefix
+  depends_on          = [azurerm_public_ip.agent_ip, azurerm_linux_virtual_machine.agent]
+}
+
+resource "null_resource" "ansible" {
+  depends_on = [data.azurerm_public_ip.ip_ref]
+  provisioner "remote-exec" {
+    inline = ["echo VM is configured"]
+    connection {
+      user        = "ansible"
+      private_key = file("~/.ssh/id_rsa")
+      host        = data.azurerm_public_ip.ip_ref.ip_address
+    }
+  }
+
+  provisioner "local-exec" {
+    command = "ansible-playbook  -i '${data.azurerm_public_ip.ip_ref.ip_address},'  ../configuration_management/azure_agent_playbook.yaml"
   }
 
 }

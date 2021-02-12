@@ -1,6 +1,6 @@
 ---
 - name: Install and configure Azure pipeline agent software
-  hosts: agents
+  hosts: all
   become: yes
   vars_files:
     - "./secrets.yaml"
