@@ -106,7 +106,7 @@ resource "azurerm_linux_virtual_machine" "agent" {
   }
 
   tags = {
-    "${var.default_user}" = ""
+    "${var.default_user}" = var.prefix 
   }
 
 }
