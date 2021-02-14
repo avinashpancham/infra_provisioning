@@ -45,6 +45,7 @@
     --auth pat
     --token={{ token }}
     --pool={{ pool | default('Default') }}
+    --replace
   args:
     chdir: /home/{{ user }}
     creates: .agent
