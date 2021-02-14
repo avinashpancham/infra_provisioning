@@ -3,10 +3,10 @@
   hosts: all
   become: yes
   vars_files:
-    - "./secrets.yaml"
+    - './secrets.yaml'
   vars:
-    agent_version: 2.181.1
-    pool: Default
+    # agent_version: 2.181.1  # optional
+    # pool: self-hosted  # optional
     user: azure
   roles:
     - custom_sudo_user
