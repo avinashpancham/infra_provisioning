@@ -1,7 +1,5 @@
 ---
 required_vars:
-  - agent_version
-  - pool
+  - ado_token
+  - ado_url
   - user
-  - url
-  - token
