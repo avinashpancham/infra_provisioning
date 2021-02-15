@@ -55,10 +55,20 @@ resource "azurerm_network_security_group" "agents" {
   }
 }
 
+resource "azurerm_storage_account" "agents" {
+    name                = "${var.name}${random_id.suffix.hex}"
+    resource_group_name = var.name_rg
+    depends_on          = [azurerm_resource_group.agents]
+    location            = var.location
+
+    account_replication_type    = "LRS"
+    account_tier                = "Standard"
+}
+
 resource "azurerm_linux_virtual_machine_scale_set" "agents" {
   name                = "${var.name}-${random_id.suffix.hex}"
   resource_group_name = var.name_rg
-  depends_on          = [azurerm_network_security_group.agents]
+  depends_on          = [azurerm_network_security_group.agents, azurerm_storage_account.agents]
   admin_username      = var.default_user
   instances           = var.instances
   location            = var.location
@@ -67,6 +77,10 @@ resource "azurerm_linux_virtual_machine_scale_set" "agents" {
   admin_ssh_key {
     username   = var.default_user
     public_key = file("${var.ssh_key_location}.pub")
+  }
+
+  boot_diagnostics {
+    storage_account_uri = azurerm_storage_account.agents.primary_blob_endpoint
   }
 
   source_image_reference {
