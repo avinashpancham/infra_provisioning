@@ -160,6 +160,6 @@ resource "null_resource" "ansible" {
   }
 
   provisioner "local-exec" {
-    command = "ansible-playbook  --private-key ${var.ssh_key_location} -i '${data.azurerm_public_ip.ip_ref.ip_address},'  ../../playbooks/jupyterhub/playbook.yaml"
+    command = "ansible-playbook  --private-key ${var.ssh_key_location} -i '${data.azurerm_public_ip.ip_ref.ip_address},'  --skip-tags adduser ../../playbooks/jupyterhub/playbook.yaml"
   }
 }

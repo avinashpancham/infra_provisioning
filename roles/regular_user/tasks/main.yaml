@@ -6,7 +6,7 @@
   loop: '{{ required_vars }}'
 - name: Add user
   user:
-    name: '{{ dummy_user }}'
+    name: '{{ user }}'
     password: "{{ 'changeme'|password_hash('sha512') }}"
     update_password: on_create
     state: present

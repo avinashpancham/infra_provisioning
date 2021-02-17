@@ -1,0 +1,15 @@
+---
+- name: Add new user
+  include_role:
+    name: regular_user
+  vars:
+    user: '{{ new_user }}'
+- name: Add new user to config file
+  ansible.builtin.replace:
+    path: /opt/jupyterhub/etc/jupyterhub/jupyterhub_config.py
+    regexp: '^c.Authenticator.allowed_users = {(.*)}$'
+    replace: 'c.Authenticator.allowed_users = {\1,"{{ new_user }}"}'
+- name: Restart service
+  ansible.builtin.systemd:
+    state: restarted
+    name: jupyterhub.service
