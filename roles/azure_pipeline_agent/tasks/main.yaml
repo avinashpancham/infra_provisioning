@@ -59,7 +59,7 @@
       ansible.builtin.file:
         path: /home/{{ user }}/.ansible/tmp
         state: directory
-        mode: '0700'
+        mode: 0700
     - name: Download and extract Azure DevOps agent software
       become_user: '{{ user }}'
       ansible.builtin.unarchive:
@@ -94,9 +94,9 @@
         creates: .service
     - name: Get Azure DevOps agent systemd name
       command: cat /home/{{ user }}/.service
-      register: azure_devops_systemd
+      register: azure_devops_service
       changed_when: false
-    - name: Run Azure DevOps agent
+    - name: Run Azure DevOps agent service
       ansible.builtin.systemd:
-        name: '{{ azure_devops_systemd.stdout }}'
+        name: '{{ azure_devops_service.stdout }}'
         state: started

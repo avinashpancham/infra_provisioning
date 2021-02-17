@@ -1,0 +1,15 @@
+---
+- name: Install and configure Jupyterhub
+  hosts: all
+  become: yes
+  vars_files:
+    - ./secrets.yaml
+  vars:
+    jupyter_path: /opt/jupyterhub
+    nginx_conf: ./nginx_jupyterhub_config
+    dummy_user: jupyter
+  roles:
+    - dummy_user
+    - jupyterhub
+    - conda
+    - nginx

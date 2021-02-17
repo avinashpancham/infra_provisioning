@@ -22,25 +22,27 @@ resource "azurerm_resource_group" "agents" {
 
 resource "azurerm_virtual_network" "agents" {
   name                = "${var.name}_vnet"
-  resource_group_name = var.name_rg
   depends_on          = [azurerm_resource_group.agents]
-  address_space       = ["10.0.0.0/16"]
   location            = var.location
+  resource_group_name = var.name_rg
+
+  address_space = ["10.0.0.0/16"]
 }
 
 resource "azurerm_subnet" "agents" {
-  name                 = "${var.name}_subnet"
-  resource_group_name  = var.name_rg
-  depends_on           = [azurerm_virtual_network.agents]
+  name                = "${var.name}_subnet"
+  depends_on          = [azurerm_virtual_network.agents]
+  resource_group_name = var.name_rg
+
   address_prefixes     = ["10.0.2.0/24"]
   virtual_network_name = azurerm_virtual_network.agents.name
 }
 
 resource "azurerm_network_security_group" "agents" {
   name                = "${var.name}_nsg"
-  resource_group_name = var.name_rg
   depends_on          = [azurerm_resource_group.agents]
   location            = var.location
+  resource_group_name = var.name_rg
 
   security_rule {
     name                       = "SSH"
@@ -56,23 +58,24 @@ resource "azurerm_network_security_group" "agents" {
 }
 
 resource "azurerm_storage_account" "agents" {
-    name                = "${var.name}${random_id.suffix.hex}"
-    resource_group_name = var.name_rg
-    depends_on          = [azurerm_resource_group.agents]
-    location            = var.location
+  name                = "${var.name}${random_id.suffix.hex}"
+  depends_on          = [azurerm_resource_group.agents]
+  location            = var.location
+  resource_group_name = var.name_rg
 
-    account_replication_type    = "LRS"
-    account_tier                = "Standard"
+  account_replication_type = "LRS"
+  account_tier             = "Standard"
 }
 
 resource "azurerm_linux_virtual_machine_scale_set" "agents" {
   name                = "${var.name}-${random_id.suffix.hex}"
-  resource_group_name = var.name_rg
   depends_on          = [azurerm_network_security_group.agents, azurerm_storage_account.agents]
-  admin_username      = var.default_user
-  instances           = var.instances
   location            = var.location
-  sku                 = "Standard_B1ls"
+  resource_group_name = var.name_rg
+
+  admin_username = var.default_user
+  instances      = var.instances
+  sku            = "Standard_B1ls"
 
   admin_ssh_key {
     username   = var.default_user
