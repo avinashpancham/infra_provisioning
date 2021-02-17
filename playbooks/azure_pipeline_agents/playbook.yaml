@@ -1,5 +1,5 @@
 ---
-- name: Install and configure Azure pipeline agents
+- name: Set up Azure pipeline agents
   hosts: all
   become: yes
   vars_files:

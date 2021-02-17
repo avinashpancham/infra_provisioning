@@ -47,9 +47,11 @@
         - {regexp: '^#?c\.Spawner\.default_url',
            line: "c.Spawner.default_url = '/lab'"}
         - {regexp: '^#?c\.Authenticator\.admin_users',
-           line: "c.Authenticator.admin_users = {'jupyter'}"}
+           line: "c.Authenticator.admin_users = {'{{  admin_user }}'}"}
         - {regexp: '^#?c\.JupyterHub\.bind_url',
            line: "c.JupyterHub.bind_url = 'http://:8000/jupyter'"}
+        - {regexp: '^#?c\.Authenticator\.allowed_users',
+           line: "c.Authenticator.allowed_users = {'{{  admin_user }}'}"}
 - name: Configure jupyterhub.service
   block:
     - name: Create jupyterhub directory

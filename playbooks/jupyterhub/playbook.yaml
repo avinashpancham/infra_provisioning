@@ -1,15 +1,39 @@
 ---
-- name: Install and configure Jupyterhub
+- name: Set up Jupyterhub server
   hosts: all
   become: yes
-  vars_files:
-    - ./secrets.yaml
-  vars:
-    jupyter_path: /opt/jupyterhub
-    nginx_conf: ./nginx_jupyterhub_config
-    dummy_user: jupyter
-  roles:
-    - dummy_user
-    - jupyterhub
-    - conda
-    - nginx
+  tasks:
+    - name: Add jupyter admin user
+      include_role:
+        name: regular_user
+      vars:
+        user: jupyter
+    - name: Install and configure jupyterhub
+      include_role:
+        name: jupyterhub
+      vars:
+        admin_user: jupyter
+        jupyter_path: /opt/jupyterhub
+    - name: Install and configure conda
+      include_role:
+        name: conda
+      vars:
+        jupyter_path: /opt/jupyterhub
+    - name: Install and configure nginx
+      include_role:
+        name: nginx
+      vars:
+        nginx_conf: ./nginx_jupyterhub_conf
+    - name: Add new user(s)
+      tags:
+        - adduser
+      include_tasks:
+        file: add_user.yaml
+        apply:
+          tags:
+            - adduser
+      with_items:
+        - user_1
+        - user_2
+      loop_control:
+        loop_var: new_user
