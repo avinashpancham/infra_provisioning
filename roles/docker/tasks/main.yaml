@@ -1,5 +1,5 @@
 ---
-- name: Update apt and install dependencies from apt
+- name: Update apt and install dependencies
   block:
     - name: Install aptitude
       package: name=aptitude state=latest update_cache=yes force_apt_get=yes
@@ -10,6 +10,8 @@
         - ca-certificates
         - curl
         - software-properties-common
+- name: Install Docker
+  block:
     - name: Add Docker GPG apt Key
       apt_key:
         url: https://download.docker.com/linux/ubuntu/gpg

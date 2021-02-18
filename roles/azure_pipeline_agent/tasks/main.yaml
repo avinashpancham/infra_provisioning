@@ -1,7 +1,7 @@
 ---
-- name: Check required variables and settings
+- name: Check for required variables and settings
   block:
-    - name: Check required variables
+    - name: Check for required variables
       fail:
         msg: 'Variable {{ item }} is not defined'
       when: item not in vars
@@ -92,7 +92,7 @@
       args:
         chdir: /home/{{ user }}
         creates: .service
-    - name: Get Azure DevOps agent systemd name
+    - name: Get Azure DevOps agent service name
       command: cat /home/{{ user }}/.service
       register: azure_devops_service
       changed_when: false

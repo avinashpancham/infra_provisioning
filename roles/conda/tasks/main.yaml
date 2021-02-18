@@ -1,5 +1,5 @@
 ---
-- name: Install conda for the whole system
+- name: Install Conda for the whole system
   block:
     - name: Add Conda GPG apt Key
       apt_key:
@@ -12,38 +12,38 @@
           https://repo.anaconda.com/pkgs/misc/debrepo/conda
           stable main
         state: present
-    - name: Update apt and install conda
+    - name: Update apt and install Conda
       package: update_cache=yes name=conda state=latest
-    - name: Symlink conda
+    - name: Symlink Conda
       ansible.builtin.file:
         # Add symlink such that conda is started during boot
         src: /opt/conda/etc/profile.d/conda.sh
         dest: /etc/profile.d/conda.sh
         state: link
-- name: Install default conda env for all users
+- name: Install default Conda environment for all users
   block:
-    - name: Create directory for conda envs
+    - name: Create directory for Conda environments
       ansible.builtin.file:
         path: /opt/conda/envs/
         state: directory
         mode: 0700
-    - name: Create conda virtual env
+    - name: Create default Conda virtual environment
       command: >
         /opt/conda/bin/conda create -y
         --prefix /opt/conda/envs/python_default
         python=3.9 ipykernel
       args:
         creates: /opt/conda/envs/python
-    - name: Install ipython kernel
+    - name: Add default Conda environment to Jupyterhub
       command: >
         /opt/conda/envs/python_default/bin/python
         -m ipykernel install
         --prefix {{ jupyter_path }}/
         --name 'python_default'
-        --display-name "Python (default)"
+        --display-name 'Python (default)'
       args:
         creates: '{{ jupyter_path }}/share/jupyter/kernels/python/'
-    - name: Make shared local dir accessible for everyone to store kernels
+    - name: Enable access to kernel locations
       ansible.builtin.file:
         path: '{{ item.path }}'
         mode: '{{ item.mode }}'

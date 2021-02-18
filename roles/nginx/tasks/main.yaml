@@ -1,5 +1,5 @@
 ---
-- name: Check required variables
+- name: Check for required variables
   fail:
     msg: 'Variable {{ item }} is not defined'
   when: item not in vars
@@ -8,11 +8,11 @@
   package:
     name: nginx
     state: present
-- name: Create nginx config file
+- name: Add nginx conf
   ansible.builtin.copy:
     src: '{{ nginx_conf }}'
     dest: /etc/nginx/sites-available/default
-- name: Start nginx service
+- name: Start nginx.service
   ansible.builtin.systemd:
     state: restarted
     name: nginx.service
