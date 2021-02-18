@@ -3,7 +3,7 @@
   block:
     - name: Install aptitude
       package: name=aptitude state=latest update_cache=yes force_apt_get=yes
-    - name: Install dependencies
+    - name: Install dependencies from apt
       package: name={{ item }} state=present
       loop:
         - apt-transport-https

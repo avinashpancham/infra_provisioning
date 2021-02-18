@@ -2,13 +2,21 @@
 - name: Set up Azure pipeline agents
   hosts: all
   become: yes
+  vars:
+    user: azure
   vars_files:
     - ./secrets.yaml
-  vars:
-    # agent_version: 2.181.1  # optional
-    # pool: self-hosted  # optional
-    user: azure
-  roles:
-    - custom_sudo_user
-    - docker
-    - azure_pipeline_agent
+
+  tasks:
+    - name: Add azure admin user
+      include_role:
+        name: custom_sudo_user
+    - name: Install Docker
+      include_role:
+        name: docker
+    - name: Install and configure Azure pipeline agent
+      include_role:
+        name: azure_pipeline_agent
+      # vars:
+        # agent_version: 2.181.1  # optional else use latest version
+        # pool: self-hosted  # optional else use Default pool
