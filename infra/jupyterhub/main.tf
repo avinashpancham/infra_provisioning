@@ -140,6 +140,10 @@ resource "azurerm_linux_virtual_machine" "jupyterhub" {
     username   = var.default_user
     public_key = file("${var.ssh_key_location}.pub")
   }
+
+  tags = {
+    "${var.default_user}" = var.name
+  }
 }
 
 data "azurerm_public_ip" "ip_ref" {

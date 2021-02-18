@@ -22,4 +22,5 @@ RUN apt-get update && apt-get install -y \
 # Install Python and Python package (a.o. Ansible)
 COPY requirements.txt requirements-dev.txt /tmp/pip-tmp/
 RUN pip3 --disable-pip-version-check --no-cache-dir install -r /tmp/pip-tmp/requirements-dev.txt \
-    && rm -rf /tmp/pip-tmp
+    && rm -rf /tmp/pip-tmp \
+    && ansible-galaxy collection install azure.azcollection

@@ -114,6 +114,11 @@ resource "azurerm_linux_virtual_machine_scale_set" "agents" {
       }
     }
   }
+
+  tags = {
+    "${var.default_user}" = var.name
+  }
+
 }
 
 // Retrieve Azure VM SS IPs via Azure CLI. Terraform cannot retrieve them
