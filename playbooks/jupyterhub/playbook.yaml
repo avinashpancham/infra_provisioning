@@ -23,14 +23,13 @@
         name: nginx
       vars:
         nginx_conf: nginx_jupyterhub_conf
-    - name: Add new user(s)
-      tags:
-        - adduser
-      include_tasks:
-        file: add_user.yaml
+    - name: Add new user(s) to Jupyterhub
+      tags: add_user
+      include_role:
+        name: jupyterhub
+        tasks_from: add_user
         apply:
-          tags:
-            - adduser
+          tags: add_user
       with_items: '{{ new_users }}'
       loop_control:
         loop_var: new_user

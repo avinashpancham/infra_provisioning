@@ -3,6 +3,7 @@ extends: default
 
 rules:
     truthy:
+        # Ansible allows more truthy values than 'true' and 'false'
         allowed-values:
             - 'true'
             - 'false'
