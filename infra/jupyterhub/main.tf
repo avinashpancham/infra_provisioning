@@ -167,6 +167,6 @@ resource "null_resource" "ansible" {
   }
 
   provisioner "local-exec" {
-    command = "ansible-playbook -i '${data.azurerm_public_ip.ip_ref.ip_address},'  --skip-tags adduser ../../playbooks/jupyterhub/playbook.yaml"
+    command = "ansible-playbook -i '${data.azurerm_public_ip.ip_ref.ip_address},'  --skip-tags add_user ../../playbooks/jupyterhub/playbook.yaml"
   }
 }

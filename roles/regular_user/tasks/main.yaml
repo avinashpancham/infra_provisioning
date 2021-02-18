@@ -7,6 +7,6 @@
 - name: Add user
   user:
     name: '{{ user }}'
-    password: "{{ 'changeme'|password_hash('sha512') }}"
+    password: "{{ password|password_hash('sha512') }}"
     update_password: on_create
     state: present
