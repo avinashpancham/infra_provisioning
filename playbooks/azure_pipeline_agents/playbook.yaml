@@ -4,9 +4,6 @@
   become: yes
   vars:
     user: azure
-  vars_files:
-    - ./secrets.yaml
-
   tasks:
     - name: Add azure admin user
       include_role:
@@ -17,6 +14,7 @@
     - name: Install and configure Azure pipeline agent
       include_role:
         name: azure_pipeline_agent
+        vars_from: secrets  # Add variables 'ado_token' and 'ado_url'
       # vars:
         # agent_version: 2.181.1  # optional else use latest version
         # pool: self-hosted  # optional else use Default pool
