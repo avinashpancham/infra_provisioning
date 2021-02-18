@@ -114,6 +114,11 @@ resource "azurerm_linux_virtual_machine_scale_set" "agents" {
       }
     }
   }
+
+  tags = {
+    "${var.default_user}" = var.name
+  }
+
 }
 
 // Retrieve Azure VM SS IPs via Azure CLI. Terraform cannot retrieve them
@@ -123,7 +128,7 @@ data "external" "ip" {
   "az vmss list-instance-public-ips -g ${var.name_rg} -n ${var.name}-${random_id.suffix.hex} |  jq 'map( { (.ipAddress): .ipAddress } ) | add'"]
 }
 
-// Configure VMs with Ansible. 
+// Configure VMs with Ansible.
 // First to a remote-exec so that we are sure the VM is configured once we run Ansible
 resource "null_resource" "ansible" {
   depends_on = [data.external.ip]
@@ -139,6 +144,6 @@ resource "null_resource" "ansible" {
   }
 
   provisioner "local-exec" {
-    command = "ansible-playbook  --private-key ${var.ssh_key_location} -i '${keys(data.external.ip.result)[count.index]},'  ../../playbooks/azure_pipeline_agents/playbook.yaml"
+    command = "ansible-playbook -i '${keys(data.external.ip.result)[count.index]},'  ../../playbooks/azure_pipeline_agents/playbook.yaml"
   }
 }

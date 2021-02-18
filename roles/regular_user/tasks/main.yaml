@@ -1,5 +1,5 @@
 ---
-- name: Check required variables
+- name: Check for required variables
   fail:
     msg: 'Variable {{ item }} is not defined'
   when: item not in vars

@@ -1,7 +1,7 @@
 ---
-- name: Check required variables and settings
+- name: Check for required variables and settings
   block:
-    - name: Check required variables
+    - name: Check for required variables
       fail:
         msg: 'Variable {{ item }} is not defined'
       when: item not in vars
@@ -13,7 +13,7 @@
             database: passwd
             key: '{{ user }}'
             fail_key: false
-        - name: Create user
+        - name: Create user if not present
           include_role:
             name: custom_sudo_user
           when: not getent_passwd[user]
@@ -69,7 +69,7 @@
           vsts-agent-linux-x64-{{ agent_version }}.tar.gz"
         dest: /home/{{ user }}
         creates: /home/{{ user }}/config.sh
-    - name: Configure Azure DevOps agent
+    - name: Configure Azure DevOps agent software
       become_user: '{{ user }}'
       command: >
         ./config.sh
@@ -83,7 +83,7 @@
       args:
         chdir: /home/{{ user }}
         creates: .agent
-    - name: Install Azure DevOps agent
+    - name: Install Azure DevOps agent software
       become_user: '{{ user }}'
       command: >
         sudo
@@ -92,7 +92,7 @@
       args:
         chdir: /home/{{ user }}
         creates: .service
-    - name: Get Azure DevOps agent systemd name
+    - name: Get Azure DevOps agent service name
       command: cat /home/{{ user }}/.service
       register: azure_devops_service
       changed_when: false

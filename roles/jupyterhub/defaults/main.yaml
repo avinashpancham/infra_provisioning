@@ -1,0 +1,4 @@
+---
+required_vars:
+  - admin_user
+  - jupyter_path

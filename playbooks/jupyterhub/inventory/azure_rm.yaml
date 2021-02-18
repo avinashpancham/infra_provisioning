@@ -1,0 +1,9 @@
+---
+# See also for more information
+# https://www.shudnow.io/2019/12/12/ansible-dynamic-inventories-in-azure-part-1/
+plugin: azure.azcollection.azure_rm
+auth_source: cli
+conditional_groups:
+  jupyterhub: tags.ansible in ['jupyterhub']
+exclude_host_filters:
+  - powerstate != 'running'

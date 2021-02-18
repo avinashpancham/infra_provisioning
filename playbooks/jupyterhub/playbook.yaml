@@ -2,28 +2,27 @@
 - name: Set up Jupyterhub server
   hosts: all
   become: yes
+  vars:
+    jupyter_path: /opt/jupyterhub
   tasks:
     - name: Add jupyter admin user
       include_role:
         name: regular_user
       vars:
         user: jupyter
-    - name: Install and configure jupyterhub
+    - name: Install and configure Jupyterhub
       include_role:
         name: jupyterhub
       vars:
         admin_user: jupyter
-        jupyter_path: /opt/jupyterhub
-    - name: Install and configure conda
+    - name: Install and configure Conda
       include_role:
         name: conda
-      vars:
-        jupyter_path: /opt/jupyterhub
-    - name: Install and configure nginx
+    - name: Install and configure Nginx
       include_role:
         name: nginx
       vars:
-        nginx_conf: ./nginx_jupyterhub_conf
+        nginx_conf: nginx_jupyterhub_conf
     - name: Add new user(s)
       tags:
         - adduser
@@ -32,8 +31,6 @@
         apply:
           tags:
             - adduser
-      with_items:
-        - user_1
-        - user_2
+      with_items: '{{ new_users }}'
       loop_control:
         loop_var: new_user

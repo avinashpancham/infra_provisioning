@@ -1,5 +1,10 @@
 ---
-- name: Install dependencies
+- name: Check for required variables
+  fail:
+    msg: 'Variable {{ item }} is not defined'
+  when: item not in vars
+  loop: '{{ required_vars }}'
+- name: Install Jupyterhub and its dependencies
   block:
     - name: Install aptitude
       package: name=aptitude state=latest update_cache=yes force_apt_get=yes
@@ -18,31 +23,32 @@
           - jupyterhub
           - jupyterlab
           - ipywidgets
-        state: present
         virtualenv: '{{ jupyter_path }}/'
         virtualenv_command: python3 -m venv
+        state: present
     - name: Install configurable-http-proxy from npm
       community.general.npm:
         name: configurable-http-proxy
         global: yes
-- name: Configure jupyterhub
+        state: present
+- name: Configure Jupyterhub
   block:
-    - name: Create jupyterhub directory
+    - name: Create directory for Jupyterhub conf
       ansible.builtin.file:
         path: '{{ jupyter_path }}/etc/jupyterhub/'
         state: directory
         mode: 0700
-    - name: Generate jupyterhub config file
+    - name: Generate Jupyterhub conf
       command: '{{ jupyter_path }}/bin/jupyterhub --generate-config'
       args:
         chdir: '{{ jupyter_path }}/etc/jupyterhub/'
         creates: '{{ jupyter_path }}/etc/jupyterhub/jupyterhub_config.py'
-    - name: Edit jupyterhub config file
+    - name: Edit Jupyterhub conf
       ansible.builtin.lineinfile:
         path: '{{ jupyter_path }}/etc/jupyterhub/jupyterhub_config.py'
-        state: present
         regexp: '{{ item.regexp }}'
         line: '{{ item.line }}'
+        state: present
       with_items:
         - {regexp: '^#?c\.Spawner\.default_url',
            line: "c.Spawner.default_url = '/lab'"}
@@ -54,21 +60,21 @@
            line: "c.Authenticator.allowed_users = {'{{  admin_user }}'}"}
 - name: Configure jupyterhub.service
   block:
-    - name: Create jupyterhub directory
+    - name: Create directory for jupyterhub.service
       ansible.builtin.file:
         path: '{{ jupyter_path }}/etc/systemd'
         state: directory
         mode: 0700
-    - name: Create systemd service file
+    - name: Create jupyterhub.service
       ansible.builtin.copy:
-        src: ./jupyterhub.service
+        src: jupyterhub.service
         dest: '{{ jupyter_path }}/etc/systemd/jupyterhub.service'
-    - name: Symlink systemd service file
+    - name: Symlink jupyterhub.service
       ansible.builtin.file:
         src: '{{ jupyter_path }}/etc/systemd/jupyterhub.service'
         dest: /etc/systemd/system/jupyterhub.service
         state: link
-    - name: Start jupyterhub service
+    - name: Start jupyterhub.service
       ansible.builtin.systemd:
         state: started
         daemon_reload: yes

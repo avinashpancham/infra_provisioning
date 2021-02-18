@@ -140,14 +140,21 @@ resource "azurerm_linux_virtual_machine" "jupyterhub" {
     username   = var.default_user
     public_key = file("${var.ssh_key_location}.pub")
   }
+
+  tags = {
+    "${var.default_user}" = var.name
+  }
 }
 
+// Retrieve Azure VM with a data object, the resource does not contain the value
 data "azurerm_public_ip" "ip_ref" {
   name                = "${var.name}_public_ip"
   depends_on          = [azurerm_public_ip.jupyterhub, azurerm_linux_virtual_machine.jupyterhub]
   resource_group_name = var.name_rg
 }
 
+// Configure VMs with Ansible.
+// First to a remote-exec so that we are sure the VM is configured once we run Ansible
 resource "null_resource" "ansible" {
   depends_on = [data.azurerm_public_ip.ip_ref]
   provisioner "remote-exec" {
@@ -160,6 +167,6 @@ resource "null_resource" "ansible" {
   }
 
   provisioner "local-exec" {
-    command = "ansible-playbook  --private-key ${var.ssh_key_location} -i '${data.azurerm_public_ip.ip_ref.ip_address},'  --skip-tags adduser ../../playbooks/jupyterhub/playbook.yaml"
+    command = "ansible-playbook -i '${data.azurerm_public_ip.ip_ref.ip_address},'  --skip-tags adduser ../../playbooks/jupyterhub/playbook.yaml"
   }
 }
