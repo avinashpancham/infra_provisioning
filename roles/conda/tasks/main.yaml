@@ -1,4 +1,9 @@
 ---
+- name: Check for required variables
+  fail:
+    msg: 'Variable {{ item }} is not defined'
+  when: item not in vars
+  loop: '{{ required_vars }}'
 - name: Install Conda for the whole system
   block:
     - name: Add Conda GPG apt Key

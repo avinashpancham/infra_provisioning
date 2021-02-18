@@ -22,7 +22,7 @@
       include_role:
         name: nginx
       vars:
-        nginx_conf: ./nginx_jupyterhub_conf
+        nginx_conf: nginx_jupyterhub_conf
     - name: Add new user(s)
       tags:
         - adduser
@@ -31,7 +31,6 @@
         apply:
           tags:
             - adduser
-      with_items:
-        - user_1  # Change this
+      with_items: '{{ new_users }}'
       loop_control:
         loop_var: new_user
