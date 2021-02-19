@@ -6,25 +6,32 @@
   loop: '{{ required_vars }}'
 - name: Install Jupyterhub and its dependencies
   block:
-    - name: Install aptitude
-      package: name=aptitude state=latest update_cache=yes force_apt_get=yes
     - name: Install dependencies from apt
-      package: name={{ item }} state=present
+      package: name={{ item }} state=present update_cache=yes force_apt_get=yes
       loop:
         - python3-pip
-        - python3.6-venv
+        - python3-venv
         - nodejs
         - npm
+    - name: Upgrade pip to latest version
+      # Necessary since the default pip version (version 9) only supports
+      # manylinux1, cryptography is only available as wheel in manylinux2010
+      # and manylinux2014 hence we need to recompile cryptography (which is
+      # slow) if we do not do this.
+      pip:
+        name:
+          - pip
+        virtualenv: '{{ jupyter_path }}/'
+        virtualenv_command: python3 -m venv
+        state: latest
     - name: Install python packages
       pip:
         name:
-          - cryptography==3.3.2
           - wheel
           - jupyterhub
           - jupyterlab
           - ipywidgets
         virtualenv: '{{ jupyter_path }}/'
-        virtualenv_command: python3 -m venv
         state: present
     - name: Install configurable-http-proxy from npm
       community.general.npm:

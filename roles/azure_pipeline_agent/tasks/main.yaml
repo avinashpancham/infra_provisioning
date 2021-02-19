@@ -37,10 +37,8 @@
       when: pool is not defined
 - name: Install dependencies
   block:
-    - name: Install aptitude
-      package: name=aptitude state=latest update_cache=yes force_apt_get=yes
-    - name: Install dependencies from apt
-      package: name={{ item }} state=present
+    - name: Update apt and install dependencies from apt
+      package: name={{ item }} state=present update_cache=yes force_apt_get=yes
       loop:
         - apt-transport-https
         - ca-certificates
