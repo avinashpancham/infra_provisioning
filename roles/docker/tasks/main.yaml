@@ -1,15 +1,11 @@
 ---
-- name: Update apt and install dependencies
-  block:
-    - name: Install aptitude
-      package: name=aptitude state=latest update_cache=yes force_apt_get=yes
-    - name: Install dependencies from apt
-      package: name={{ item }} state=present
-      loop:
-        - apt-transport-https
-        - ca-certificates
-        - curl
-        - software-properties-common
+- name: Update apt and install dependencies from apt
+  package: name={{ item }} state=present update_cache=yes force_apt_get=yes
+  loop:
+    - apt-transport-https
+    - ca-certificates
+    - curl
+    - software-properties-common
 - name: Install Docker
   block:
     - name: Add Docker GPG apt Key
@@ -20,5 +16,5 @@
       apt_repository:
         repo: deb https://download.docker.com/linux/ubuntu bionic stable
         state: present
-- name: Update apt and install docker-ce
-  package: update_cache=yes name=docker-ce state=latest
+    - name: Update apt and install docker-ce
+      package: update_cache=yes name=docker-ce state=latest
