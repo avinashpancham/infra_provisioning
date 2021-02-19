@@ -23,4 +23,4 @@ RUN apt-get update && apt-get install -y \
 COPY requirements.txt requirements-dev.txt /tmp/pip-tmp/
 RUN pip3 --disable-pip-version-check --no-cache-dir install -r /tmp/pip-tmp/requirements-dev.txt \
     && rm -rf /tmp/pip-tmp \
-    && ansible-galaxy collection install azure.azcollection
+    && ansible-galaxy collection install azure.azcollection:==1.4.0
