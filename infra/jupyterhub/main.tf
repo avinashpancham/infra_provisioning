@@ -56,7 +56,7 @@ data "http" "personal_ip" {
 }
 
 locals {
-    depends_on = [data.http.personal_ip]
+  depends_on  = [data.http.personal_ip]
   personal_ip = jsondecode(data.http.personal_ip.body)
 }
 
@@ -119,7 +119,7 @@ resource "azurerm_linux_virtual_machine" "jupyterhub" {
   resource_group_name = var.name_rg
 
   network_interface_ids = [azurerm_network_interface.jupyterhub.id]
-  size                  = "Standard_B1s"
+  size                  = var.instance_size
 
   os_disk {
     caching              = "ReadWrite"

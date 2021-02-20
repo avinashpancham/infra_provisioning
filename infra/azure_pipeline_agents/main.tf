@@ -75,7 +75,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "agents" {
 
   admin_username = var.default_user
   instances      = var.instances
-  sku            = "Standard_B1ls"
+  sku            = var.instance_size
 
   admin_ssh_key {
     username   = var.default_user
