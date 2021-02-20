@@ -9,6 +9,11 @@ variable "instances" {
   description = "Number of VMs in the scale set"
 }
 
+variable "instance_size" {
+  type        = string
+  description = "The size of the VM, see 'az vm list-sizes -l westeurope -o table' for an overview"
+}
+
 variable "location" {
   type        = string
   description = "Datacenter to provision VMs, see 'az account list-locations -o table' for an overview"
