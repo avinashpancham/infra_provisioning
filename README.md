@@ -68,7 +68,7 @@ Below a list of dependencies together with the version used in this project is g
 
 - Service Principal: this is the recommended method when automating Terraform in a non-interactive environment such as a CI/CD pipeline. The instructions to set this type of authentication up are available in the Terraform [documentation](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/guides/service_principal_client_secret).
 
-1. Create a specific SSH key for Ansible.
+5. Create a specific SSH key for Ansible.
 
    ```bash
    $ ssh-keygen -t rsa -f ~/.ssh/id_rsa-ansible -N ""
