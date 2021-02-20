@@ -2,7 +2,7 @@
 - name: Add new user
   include_role:
     name: regular_user
-    vars_from: secrets  # Add variable 'password'
+    vars_from: secrets  # Add variable `default_password`
   vars:
     user: '{{ new_user }}'
 - name: Add new user to Jupyterhub conf

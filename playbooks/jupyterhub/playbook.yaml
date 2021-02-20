@@ -8,7 +8,7 @@
     - name: Add jupyter admin user
       include_role:
         name: regular_user
-        vars_from: secrets  # Add user password
+        vars_from: secrets  # Add variable `default_password`
       vars:
         user: jupyter
     - name: Install and configure Jupyterhub
