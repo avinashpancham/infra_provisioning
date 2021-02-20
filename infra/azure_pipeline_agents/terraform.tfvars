@@ -1,6 +1,6 @@
 default_user             = "ansible"
 instances                = 2
-instance_size            = "Standard_DS1_v2"
+instance_size            = "Standard_B2s"
 location                 = "westeurope"
 name                     = "agents"
 name_rg                  = "agents_rg"
