@@ -119,10 +119,10 @@ Self-hosted Azure DevOps agents are VMs that acts as agent/runner in Azure Pipel
    ```
 
 7. Check and run the Terraform workflow. This should start:
-   - The Terraform script [`main.tf`](infra/azure_pipeline_agents/main.tf) to create an Azure VM scale set;
-   - The Ansible playbook [`playbook.yaml`](playbooks/azure_pipeline_agents/playbook.yaml) to provision the software on the created VMs.
+   - The Terraform script [`infra/azure_pipeline_agents/main.tf`](infra/azure_pipeline_agents/main.tf) to create an Azure VM scale set;
+   - The Ansible playbook [`infra/azure_pipeline_agents/playbook.yaml`](playbooks/azure_pipeline_agents/playbook.yaml) to provision the software on the created VMs.
 
-   The variables for this workflow (a.o. instance size) are defined in [`terraform.tfvars`](infra/azure_pipeline_agents/terraform.tfvars).
+   The variables for this workflow (a.o. instance size) are defined in [`infra/azure_pipeline_agents/terraform.tfvars`](infra/azure_pipeline_agents/terraform.tfvars).
 
    ```bash
    # Run these commands from the directory infra_provisioning/infra/azure_pipeline_agents
@@ -165,10 +165,10 @@ JupyterHub is the best way to serve Jupyter notebook for multiple users on a ser
    ```
 
 5. Check and run the Terraform workflow. This should start:
-   - The Terraform script [`main.tf`](infra/jupyterhub/main.tf) to create an Azure VM;
-   - The Ansible playbook [`playbook.yaml`](playbooks/jupyterhub/playbook.yaml) to provision the software on the created VM.
+   - The Terraform script [`infra/jupyterhub/main.tf`](infra/jupyterhub/main.tf) to create an Azure VM;
+   - The Ansible playbook [`infra/jupyterhub/playbook.yaml`](playbooks/jupyterhub/playbook.yaml) to provision the software on the created VM.
 
-   The variables for this workflow (a.o. instance size) are defined in [`terraform.tfvars`](infra/jupyterhub/terraform.tfvars).
+   The variables for this workflow (a.o. instance size) are defined in [`infra/jupyterhub/terraform.tfvars`](infra/jupyterhub/terraform.tfvars).
 
    ```bash
    # Run these commands from the directory infra_provisioning/infra/jupyterhub
