@@ -18,3 +18,9 @@
         state: present
     - name: Update apt and install docker-ce
       package: update_cache=yes name=docker-ce state=latest
+- name: Adding non-root user to group docker
+  user:
+    name: '{{ user }}'
+    groups: docker
+    append: yes
+  when: non_root_user is defined
