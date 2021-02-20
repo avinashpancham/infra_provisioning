@@ -185,3 +185,7 @@ JupyterHub is the best way to serve Jupyter notebook for multiple users on a ser
    $ ansible-playbook -i inventory/azure_rm.yaml playbook.yaml --tags add_user --e '{"new_users":["foo","bar"]}'
 
    ```
+## Credits
+
+I got the inspiration to make these workflows with Ansible from watching [@geerlingguy](https://github.com/geerlingguy)'s excellent [Youtube streaming
+series](https://www.jeffgeerling.com/blog/2020/ansible-101-jeff-geerling-youtube-streaming-series) on Ansible. If you want to learn more on Ansible I would definitely recommend it!
