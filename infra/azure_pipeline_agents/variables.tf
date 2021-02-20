@@ -33,3 +33,9 @@ variable "ssh_key_location" {
   type        = string
   description = "SSH key pair that should be used"
 }
+
+variable "whitelisted_ip_addresses" {
+  type        = list(string)
+  default     = [""]
+  description = "Whitelisted IP addresses that can connect to the VMs"
+}

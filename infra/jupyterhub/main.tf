@@ -47,7 +47,7 @@ resource "azurerm_public_ip" "jupyterhub" {
   allocation_method = "Dynamic"
 }
 
-// Get public ip
+// Get public ip of the current device
 data "http" "personal_ip" {
   url = "https://ifconfig.co/json"
   request_headers = {
@@ -74,7 +74,7 @@ resource "azurerm_network_security_group" "jupyterhub" {
     protocol                   = "Tcp"
     source_port_range          = "*"
     destination_port_range     = "22"
-    source_address_prefix      = "*"
+    source_address_prefix      = "${local.personal_ip.ip}/32"
     destination_address_prefix = "*"
   }
 
@@ -86,7 +86,7 @@ resource "azurerm_network_security_group" "jupyterhub" {
     protocol                   = "Tcp"
     source_port_range          = "*"
     destination_port_range     = "80"
-    source_address_prefix      = "${local.personal_ip.ip}/32"
+    source_address_prefixes    = compact(concat(["${local.personal_ip.ip}/32"], var.whitelisted_ip_addresses))
     destination_address_prefix = "*"
   }
 

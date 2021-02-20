@@ -38,9 +38,22 @@ resource "azurerm_subnet" "agents" {
   virtual_network_name = azurerm_virtual_network.agents.name
 }
 
+// Get public ip of the current device
+data "http" "personal_ip" {
+  url = "https://ifconfig.co/json"
+  request_headers = {
+    Accept = "application/json"
+  }
+}
+
+locals {
+  depends_on  = [data.http.personal_ip]
+  personal_ip = jsondecode(data.http.personal_ip.body)
+}
+
 resource "azurerm_network_security_group" "agents" {
   name                = "${var.name}_nsg"
-  depends_on          = [azurerm_resource_group.agents]
+  depends_on          = [azurerm_resource_group.agents, local.personal_ip]
   location            = var.location
   resource_group_name = var.name_rg
 
@@ -52,7 +65,7 @@ resource "azurerm_network_security_group" "agents" {
     protocol                   = "Tcp"
     source_port_range          = "*"
     destination_port_range     = "22"
-    source_address_prefix      = "*"
+    source_address_prefixes    = compact(concat(["${local.personal_ip.ip}/32"], var.whitelisted_ip_addresses))
     destination_address_prefix = "*"
   }
 }
