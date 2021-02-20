@@ -118,7 +118,7 @@ Self-hosted Azure DevOps agents are VMs that acts as agent/runner in Azure Pipel
    $ terraform init
    ```
 
-7. Check and run the Terraform workflow. This should start:
+7. Check and run the Terraform workflow. This starts:
    - The Terraform script [`infra/azure_pipeline_agents/main.tf`](infra/azure_pipeline_agents/main.tf) to create an Azure VM scale set;
    - The Ansible playbook [`infra/azure_pipeline_agents/playbook.yaml`](playbooks/azure_pipeline_agents/playbook.yaml) to provision the software on the created VMs.
 
@@ -164,7 +164,7 @@ JupyterHub is the best way to serve Jupyter notebook for multiple users on a ser
    $ terraform init
    ```
 
-5. Check and run the Terraform workflow. This should start:
+5. Check and run the Terraform workflow. This starts:
    - The Terraform script [`infra/jupyterhub/main.tf`](infra/jupyterhub/main.tf) to create an Azure VM;
    - The Ansible playbook [`infra/jupyterhub/playbook.yaml`](playbooks/jupyterhub/playbook.yaml) to provision the software on the created VM.
 
